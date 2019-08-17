@@ -23,13 +23,22 @@ Output _q_traj_, _p_traj_ are 2-D array tracing the position and velocity of all
 plt.plot(q_traj[:,::2],q_traj[:,1::2])
 plt.show()
 ```
+![alt text](https://github.com/JingyaoDOU/n-Body-simulator/blob/master/git01.png)  
 The full list of options for the simulator are:
 ```python
 q_traj,p_traj, e_traj, t_traj ,L_traj=motion_simulation(q0, p0, M, Nsteps, tlim=1e10, h, step_function, force_function, adaptive=False, lamda=50)
 ```
 where:  
-   `q0`:[**required**] The initial postion of all the particles in the system, having structure like (x1,y1,x2,y2,...,xn,yn)  
-   `p0`:[**required**] The initial velocity of all the particles in the system, having structure like            (vx1,vy1,vx2,vy2,...,vxn,vyn)  
-   `M`:[**required**] The array of mass of all particles in the system, having a shpe like (m1,m2,...)  
-   `Nsteps`:[**required**] Number of total steps for the simulation. 
-   `tlim':[Default=10^6]
+   `q0`: The initial postion of all the particles in the system, having structure like (x1,y1,x2,y2,...,xn,yn)  
+   `p0`: The initial velocity of all the particles in the system, having structure like             (vx1,vy1,vx2,vy2,...,vxn,vyn)  
+   `M`: The array of mass of all particles in the system, having a shpe like (m1,m2,...)  
+   `Nsteps`: Number of total steps for the simulation.  
+   `tlim`: Time limit for simulation to stop. This parameter is used when one uses variable step size integrator and want simulates the motion of particle for a certain time.    
+   `h`: The step size.  
+   `step_function`: The type of integrator: Euler, Verlet, Leapfrog, RK4.  
+   `force_function`: The type of interactive force between each body, for now only one type: G_force.  
+   `adaptive`: Whether use variable step size method. Note can use with Leapfrog method.   
+   `lamda`: The parameter control the adaptive step size. The larger lamda, the smaller the time step.
+   
+   
+
