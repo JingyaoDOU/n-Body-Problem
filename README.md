@@ -10,9 +10,10 @@ The examples and package make use of the following commonplace python modules:
 * Scipy 1.x
 
 ## Usage 
+### Motion simulation
 Once you have the initial postion and velocity of a n-body system you can try the following codes to simulate the trajectory of each body in the system. First you should
 ```python
-import numpy
+import nbody
 ```
 Next, you can simulate the path by using a call like
 ```python
@@ -38,7 +39,25 @@ where:
    `step_function`: The type of integrator: Euler, Verlet, Leapfrog, RK4.  
    `force_function`: The type of interactive force between each body, for now only one type: G_force.  
    `adaptive`: Whether use variable step size method. Note can use with Leapfrog method.   
-   `lamda`: The parameter control the adaptive step size. The larger lamda, the smaller the time step.
-   
-   
-
+   `lamda`: The parameter control the adaptive step size. The larger lamda, the smaller the time step.  
+### Perturbation of figure-eight orbits  
+As mentioned in the dissertation, we use two criterion to measure the stability of perturbed figure-eight three-body system:  
+* The time tau when maximum mutual distance exceeds 10  
+* The number of pixel boxes N of the "phase transformed" orbit.  
+Given the perturbation dx, dy these two criterion can be computed using call
+```python
+tau, Nbox = stability_check(dx, dy, M, Nsteps,tlim, h, step_function, force_function, adaptive=True, lamda=50)
+```
+### Search simple choreographies
+If one has an initial guess _x0_ for all the coefficients in the Fourier series, using following call, one can get the optimized coefficients and thus find a choreography.
+```python
+res = minimize(Action_function, x0, Nnm, method='CG', options={'disp': True})
+```
+where:  
+* `x0`  The initial starting coefficients. 1-D arry with structure (0, n, n, 0, n, n), n here representing n coefficients. so the total length is 4n+2. 
+* `Nnm` A tuple (N, n, m) with N the number of bodies, n the order of harmonics and m number of terms in numerical approx to integral.
+If you want to find a figure-eight like orbits, fast fourier transform is used to generated proper initial coefficients by the following call:  
+```python
+x0=FFT(n)
+```
+Where _n_ is the order of harmonics you would like to use.
