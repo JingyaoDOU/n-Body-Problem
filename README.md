@@ -55,9 +55,14 @@ res = minimize(Action_function, x0, Nnm, method='CG', options={'disp': True})
 ```
 where:  
 * `x0`  The initial starting coefficients. 1-D arry with structure (0, n, n, 0, n, n), n here representing n coefficients. so the total length is 4n+2. 
-* `Nnm` A tuple (N, n, m) with N the number of bodies, n the order of harmonics and m number of terms in numerical approx to integral.
+* `Nnm` A tuple (N, n, m) with N the number of bodies, n the order of harmonics and m number of terms in numerical approx to integral.  
 If you want to find a figure-eight like orbits, fast fourier transform is used to generated proper initial coefficients by the following call:  
 ```python
-x0=FFT(n)
+x0=FFT8(n)
 ```
-Where _n_ is the order of harmonics you would like to use.
+Where _n_ is the order of harmonics you would like to use.  
+What's more, if you want to generate initial coefficients for any other type of orbits, use call like:
+```python
+x0=FFT(n,x,y)
+```
+where _x_ and _y_ are 1-D array storing postion of the _n_ points on the orbit.
