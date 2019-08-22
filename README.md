@@ -20,8 +20,9 @@ Next, you can simulate the path by using a call like
 ```python
 q_traj,p_traj, e_traj, t_traj ,L_traj= motion_simulation(q0, p0, M, Nsteps, tlim, h, Verlet, G_force)
 ```
-Output _q_traj_, _p_traj_ are 2-D array tracing the position and velocity of all the particles in the system . Each row in the _q_traj_ represents the particles' postion at center time and there are in total `Nsteps` rows in the array. The structure of each row is like `(x1,y1,x2,y2,...,xn,yn)`. _p_traj's_ rows has the same structure. _e_traj_, _t_traj_, L_traj_ are the 1-D array storing the total energy, time, angualr momentum along the time. One can use the following call to plot the trajectory of each body in the system.
+Output _q_traj_, _p_traj_ are 2-D array tracing the position and velocity of all the particles in the system . Each row in the _q_traj_ represents the particles' postion at center time and there are in total `Nsteps` rows in the array. The structure of each row is like `(x1,y1,x2,y2,...,xn,yn)`. _p_traj's_ rows has the same structure. _e_traj_, _t_traj_, L_traj_ are the 1-D array storing the total energy, time, angualr momentum along the time. One can use the following call to plot the trajectory of a figure-eight three-body system.
 ```python
+import matplotlib.pyplot as plt
 p0=np.array([0.4662036850, 0.4323657300, -0.93240737, -0.86473146, 0.4662036850, 0.4323657300])
 q0 =np.array([-0.97000436, 0.24308753,0.0,0.0, 0.97000436, -0.24308753])
 M=np.array([1.0,1.0,1.0])
