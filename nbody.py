@@ -423,4 +423,14 @@ def FFT8(n):
     x0=np.hstack([a2[0],a1[1:],a2[1:],b2[0],b1[1:],b2[1:]])
     return x0/n
 
+def FFT(q_traj):
+    
+    a2=np.real(np.fft.rfft(q_traj[:,0]))
+    a1=np.imag(np.fft.rfft(q_traj[:,0]))
+    b2=np.real(np.fft.rfft(q_traj[:,1]))
+    b1=np.imag(np.fft.rfft(q_traj[:,1]))
+    x0=np.hstack([a2[0],a1[1:],a2[1:],b2[0],b1[1:],b2[1:]])
+    n=len(a1[1:])
+
+    return x0/n
 
