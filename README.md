@@ -34,7 +34,7 @@ plt.show()
 ![alt text](https://github.com/JingyaoDOU/n-Body-simulator/blob/master/git01.png)  
 The full list of options for the simulator are:
 ```python
-q_traj,p_traj, e_traj, t_traj ,L_traj=motion_simulation(q0, p0, M, Nsteps, tlim=1e10, h, step_function, force_function, adaptive=False, lamda=50)
+q_traj,p_traj, e_traj, t_traj ,L_traj=motion_simulation(q0, p0, M, Nsteps, tlim, h, step_function, force_function, adaptive=False, lamda=50)
 ```
 where:  
    `q0`: The initial postion of all the particles in the system, having structure like (x1,y1,x2,y2,...,xn,yn)  
