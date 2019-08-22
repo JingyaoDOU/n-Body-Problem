@@ -70,6 +70,6 @@ x0=FFT8(n)
 Where _n_ is the order of harmonics you would like to use.  
 What's more, if you want to generate initial coefficients for any other type of orbits, use call like:
 ```python
-x0=FFT(n,x,y)
+x0=FFT(q_traj)
 ```
-where _x_ and _y_ are 1-D array storing postion of the _n_ points on the orbit.
+where _q_traj_ is a 2-D array storing postion of the _n_ (`n=np.shape(q_traj)[0]`) points on the orbit.
