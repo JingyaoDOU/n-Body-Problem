@@ -194,9 +194,9 @@ def RK4(q,p,M,N,h, force_function):
     
     total_e = ke + pe 
     
-    return qt, pt, total_e, L, f_new
+    return qt, pt, total_e, L
 
-def motion_simulation(q0, p0, M, Nsteps, tlim=1e10, h, step_function, force_function, adaptive=False, lamda=50):
+def motion_simulation(q0, p0, M, Nsteps, tlim, h, step_function, force_function, adaptive=False, lamda=50):
     
 
     if (step_function=='Leapfrog'):
@@ -204,14 +204,14 @@ def motion_simulation(q0, p0, M, Nsteps, tlim=1e10, h, step_function, force_func
 
         N_ini=10
         for n in range(N_ini):
-        Q,p0,energy,L = Eulers_Method(q0, p0,M,N, h_ini, total_force)
+            Q,p0,energy,L = Eulers_Method(q0, p0,M,N, h_ini, G_force)
 
     N=len(M)
     q = np.copy(q0)
     p = np.copy(p0)
 
     # Find initial totoal energy and angular momentum
-    pe_ini,f_ini,L_ini=total_force(q,p,M,N)
+    pe_ini,f_ini,L_ini=G_force(q,p,M,N)
     ke_ini = np.sum( p*p / 2*np.repeat(M,2)) 
     e_ini=pe_ini+ke_ini
     
@@ -223,8 +223,8 @@ def motion_simulation(q0, p0, M, Nsteps, tlim=1e10, h, step_function, force_func
            
     t = 0
 
-    q_traj = [q_tran] 
-    p_traj = [p_tran] 
+    q_traj = [q_tran_ini] 
+    p_traj = [p_tran_ini] 
     e_traj = [e_ini]
     L_traj = [L_ini]
     t_traj = [0]
@@ -236,7 +236,7 @@ def motion_simulation(q0, p0, M, Nsteps, tlim=1e10, h, step_function, force_func
         if t>tlim:
             break
     
-        q,p,energy,L,f = step_function(q, p,M,N, h, force_function)
+        q,p,energy,L = step_function(q, p,M,N, h, force_function)
         q_center=np.array([np.sum(M*q[::2]),np.sum(M*q[1::2])])/np.sum(M)
         q_tran=q-np.tile(q_center,N)
         p_center=np.array([np.sum(p[::2]),np.sum(p[1::2])])/np.sum(M)        
@@ -251,8 +251,8 @@ def motion_simulation(q0, p0, M, Nsteps, tlim=1e10, h, step_function, force_func
                 for j in range (i+1,N):
                     q2=q[2*j:2*j+2]
                     p2=q[2*j:2*j+2]
-                    r+=np.linalg.norm(q1-q2)
-                    v+=np.linalg.norm(p1-p2)
+                    r+=[np.linalg.norm(q1-q2)]
+                    v+=[np.linalg.norm(p1-p2)]
             r=np.array(r)
             v=np.array(v)
             dh=r/v
@@ -334,10 +334,11 @@ def countBox(q_traj):
     return Nbox
 
 def findVV(dx,dy):
-    
+    M=np.array([1.0,1.0,1.0])
+    N=3
     q0=np.array([-0.97000436, 0.24308753,0.0,0.0, 0.97000436, -0.24308753])
     p0=np.array([0.4662036850, 0.4323657300, -0.93240737, -0.86473146, 0.4662036850, 0.4323657300])
-    pe_ini,f_ini,L_ini=total_force(q0,p0,M,N)
+    pe_ini,f_ini,L_ini=G_force(q0,p0,M,N)
     ke_ini = np.sum( p0*p0 / 2*np.repeat(M,2)) 
     e_ini=pe_ini+ke_ini
 
@@ -399,6 +400,7 @@ def sincos_2(n,t):
                       -np.arange(1,n+1)*np.sin(np.arange(1,n+1)*t)])
 
 def FFT8(n):
+    n=2*n
     q0=np.array([-0.07880227334416882, 0.5570371897354746,0.5940359608209828, 0.383319210563721,-0.5152336874768139, -0.9403564002991956])
     p0=np.array([0.15998292728488323, 1.1593418791674066,-0.5557289806160467, -0.9029539156799118,0.39574605333116347, -0.2563879634874948])
     M=np.array([1.0,1.0,1.0])
@@ -410,7 +412,7 @@ def FFT8(n):
     Nsteps = n
     N=3
     
-    f_traj,q_traj, p_traj, e_traj, t_traj ,L_traj= run_simulation(q0, p0,M,N, Nsteps,tlim, h, RK4, total_force)
+    q_traj, p_traj, e_traj, t_traj ,L_traj= motion_simulation(q0, p0,M, Nsteps,tlim, h, RK4, G_force)
     
     a2=np.real(np.fft.rfft(q_traj[:,0]))
     a1=np.imag(np.fft.rfft(q_traj[:,0]))
@@ -419,6 +421,6 @@ def FFT8(n):
     b1=np.imag(np.fft.rfft(q_traj[:,1]))
     
     x0=np.hstack([a2[0],a1[1:],a2[1:],b2[0],b1[1:],b2[1:]])
-    return x0
+    return x0/n
 
 
