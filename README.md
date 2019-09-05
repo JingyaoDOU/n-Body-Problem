@@ -1,8 +1,8 @@
 # n-Body Problem: simulating motion and searching orbits
 Here I present some of the python code I write for my MSc dissertation - a project about simulating n-body system and finding Choreographies orbits. Codes in `nbody` only contains the main functions and those written for drawing plots and
-conducting numerical test is not concluded.  
+conducting numerical test is not included.  
 
-The code will basically have two big part: one part is using different integrator to numerically solve Newtonian motion eqution in 2D and simulate the trajactory of each body in the system. The simulator can take different number of bodies, masses, integrator, step size and interaction force. Another part is used to find Choreographies, which is a special kind periodic solution to n-body problem.
+The codes basically have two big parts: one part is using different integrator to numerically solve Newtonian motions equtions in 2D and simulate the trajactory of each body in the system. The simulator can take different number of bodies, masses, integrator, step size and interaction force. Another part is used to find Choreographies, which is a special kind periodic solution to n-body problem.
 
 ## Requiements 
 The examples and package make use of the following commonplace python modules:
